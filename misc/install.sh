@@ -1,13 +1,6 @@
-package main
+#!/bin/bash 
 
-import (
-	"fmt"
-	"net"
-	"os"
-)
-
-func main() {
-	fmt.Println(`
+cat <<EOF
   ██████  ██░ ██ ▓█████  ██▀███   ██▓     ▒█████   ▄████▄   ██ ▄█▀
 ▒██    ▒ ▓██░ ██▒▓█   ▀ ▓██ ▒ ██▒▓██▒    ▒██▒  ██▒▒██▀ ▀█   ██▄█▒ 
 ░ ▓██▄   ▒██▀▀██░▒███   ▓██ ░▄█ ▒▒██░    ▒██░  ██▒▒▓█    ▄ ▓███▄░ 
@@ -17,24 +10,12 @@ func main() {
 ░ ░▒  ░ ░ ▒ ░▒░ ░ ░ ░  ░  ░▒ ░ ▒░░ ░ ▒  ░  ░ ▒ ▒░   ░  ▒   ░ ░▒ ▒░
 ░  ░  ░   ░  ░░ ░   ░     ░░   ░   ░ ░   ░ ░ ░ ▒  ░        ░ ░░ ░ 
       ░   ░  ░  ░   ░  ░   ░         ░  ░    ░ ░  ░ ░      ░  ░   
-                                                  ░               
-A tool built for blue teams and incident response teams
-													  `)
+                                                  ░        
+EOF
 
-	hostname, err := os.Hostname()
-	if err != nil {
-		hostname = "Could not be found"
-	}
+echo "Installing golang"
+wget -O ~/go1.14.5.linux-amd64.tar.gz https://golang.org/dl/go1.14.5.linux-amd64.tar.gz
+tar -C /usr/local -xzf ~/go1.14.5.linux-amd64.tar.gz
+echo "export PATH=$PATH:/usr/local/go/bin" >>/etc/profile
+source /etc/profile
 
-	// addr, err := net.LookupIP(hostname)
-	// if err != nil {
-	// 	addr = nil
-	// }
-
-	fmt.Println(`
-=====================
-Sherlock Initialized
-=====================
-Hostname: ` + hostname + `
-`)
-}
