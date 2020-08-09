@@ -64,7 +64,10 @@ Argument list:
 
 		servicesSupported - Returns the list of services supported
 
+	Log file Arguments:
+
 		fetch<CRITICAL SERVICE/PROGRAM>Logs /path/to/dir - Fetches log files for that critical service, EX: fetchApache2Logs /home/reports
+		fetchAuthLogs
 
 `
 		fmt.Println(argText)
@@ -99,7 +102,10 @@ Apache2
 	case "fetchApache2Logs": 
 
 		getApache2LogsStandalone(nicerArgs[1])
-	
+	case "fetchAuthLogs":
+
+		getAuthLogsStandalone(nicerArgs[1])
+
 	default:
 		fmt.Println("No arguments specified, exiting with a status code of 0")
 		os.Exit(0)
