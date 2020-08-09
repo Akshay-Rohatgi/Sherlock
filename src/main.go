@@ -42,11 +42,14 @@ Use ./src help for a list of commands				  `)
 ========================================================================================================================
 Argument list:
 help - display possible arguments (what you see right now)
-systemScan /path/to/dir - Will save all system log files, iptable rules, and suspicious files to the specified directory
+systemScan /path/to/dir - Will save all system log files, iptable rules, and suspicious files to the specified directory.
+firewallScan /path/to/dir ipv? (ipv4 or ipv6) - Will save ipv4 or ipv6 rules to specified directory. 
 ========================================================================================================================`
 		fmt.Println(argText)
 	case "systemScan":
 		systemScan(nicerArgs[1])
+	case "firewallScan":
+		firewallScan(nicerArgs[1], nicerArgs[2])
 	default:
 		fmt.Println("No arguments specified, exiting with a status code of 0")
 		os.Exit(0)
