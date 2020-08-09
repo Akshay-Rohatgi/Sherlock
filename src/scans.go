@@ -10,6 +10,6 @@ func systemScan(filePath string) {
 	fmt.Println("Saving all files to " + filePath)
 
 	// Get iptable rules
-	iptablesRules := commandOutput("/usr/sbin/iptables -S")
+	iptablesRules := commandOutput("ls -la")
 	fmt.Println(iptablesRules)
 }
