@@ -36,11 +36,6 @@ func main() {
 A tool built for blue teams and incident response teams
 sherlock@` + hostname + ` is ready
 													  `)
-
-	// command := "ls -lah"
-	// ree := strings.Fields(command)
-	// fmt.Println(ree)
-	// ls()
 	fmt.Println(commandOutput("ls"))
 }
 
