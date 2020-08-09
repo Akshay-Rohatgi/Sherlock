@@ -1,8 +1,12 @@
 package main
 
 import (
+	"os"
+	"log"
 	"fmt"
+	"bufio"
 	"os/exec"
+	"strings"
 	// "strings"
 )
 
@@ -18,4 +22,18 @@ func commandOutput(command string) string {
 func runCommand(command string) {
 	run := exec.Command("sh", "-c", command)
 	run.Run()
+}
+
+func getLocalUsers() {
+	fle, err := os.Open("/etc/passwd")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	scanner := bufio.NewScanner(fle)
+	scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		user := strings.Split(scanner.Text(), ":")
+		fmt.Println(user[0])
+	}
+	fle.Close()
 }

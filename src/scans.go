@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"fmt"
 	"time"
 )
@@ -20,6 +21,8 @@ func systemScan(filePath string) {
 	suidScan(reportPath)
 	// Get sgid files and write to file
 	sgidScan(reportPath)
+	// Attempt to find apache log files
+	getApache2Logs(reportPath)
 }
 
 func firewallScan(filePath, ipVersion string) {
@@ -63,3 +66,23 @@ func sgidScan(filePath string) {
 	runCommand("sudo find / -perm /2000 2>/dev/null > " + reportPath + "SGIDfiles.txt")
 }
 
+func getApache2Logs(filePath string) {
+	reportPath := filePath
+
+	// check to see where the access logs are and if found then copy them to desired file path
+	if _, err := os.Stat("/var/log/apache/access.log"); err == nil {
+		fmt.Println("The apache access log exists at /var/log/apache/access.log!")
+		runCommand("chmod 777 " + reportPath)
+		runCommand("cp /var/log/apache/access.log " + reportPath)
+	} else if _, err := os.Stat("/var/log/apache2/access.log"); err == nil {
+		fmt.Println("The apache access log exists at /var/log/apache2/access.log!")
+		runCommand("chmod 777 " + reportPath)
+		runCommand("cp /var/log/apache2/access.log " + reportPath)
+	} else if _, err := os.Stat("/etc/httpd/logs/access_log"); err == nil {
+		fmt.Println("The apache access log exists at /etc/httpd/logs/access_log!")
+		runCommand("chmod 777 " + reportPath)
+		runCommand("cp /etc/httpd/logs/access_log " + reportPath)
+	} else {
+		fmt.Println("Could not find apache logs!")
+	}
+}
