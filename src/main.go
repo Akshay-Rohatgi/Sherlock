@@ -52,6 +52,7 @@ Argument list:
 		
 		localUsers - display all users on the system (including system users)
 		getMD5 /path/to/dir - get md5 checksum of a file (this arg is a WASTE of time, why would you write a go function for something you can do with one linux command smh UNLESS you dont have md5sum installed. Then yea, use go.)
+		md5Baselines - get md5 checksums of some important files
 
 	System Arguments
 
@@ -83,6 +84,10 @@ Argument list:
 	case "getMD5": 
 
 		getMD5(nicerArgs[1])
+
+	case "md5Baselines":
+
+		md5Baselines()
 
 	case "firewallScan":
 	

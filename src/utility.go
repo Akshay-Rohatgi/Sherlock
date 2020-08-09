@@ -41,7 +41,7 @@ func getLocalUsers() {
 
 }
 
-func getMD5(filePath string) {
+func getMD5(filePath string) []byte {
 	fle, err := os.Open(filePath)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -55,4 +55,5 @@ func getMD5(filePath string) {
 	}
 
 	fmt.Printf("MD5 Hash for %s is %x\n", filePath, hash.Sum(nil))
+	return hash.Sum(nil)
 }
