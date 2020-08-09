@@ -35,3 +35,16 @@ func suidScanStandalone(filePath string) {
 	runCommand("touch " + reportPath + "SUIDfiles.txt")
 	runCommand("sudo find / -perm /4000 2>/dev/null > " + reportPath + "SUIDfiles.txt")
 }
+
+func sgidScanStandalone(filePath string) {
+	time := time.Now()
+	reportPath := filePath + "sherlock-sgid-scan-report-" + time.Format("01-02-2006") + "/"
+
+	fmt.Println("Starting SGID scan now!")
+	runCommand("mkdir " + reportPath)
+	runCommand("chmod 777 " + reportPath)
+	fmt.Println("Saving all files to " + reportPath)
+
+	runCommand("touch " + reportPath + "SGIDfiles.txt")
+	runCommand("sudo find / -perm /2000 2>/dev/null > " + reportPath + "SGIDfiles.txt")
+}

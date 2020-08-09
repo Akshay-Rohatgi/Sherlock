@@ -16,6 +16,10 @@ func systemScan(filePath string) {
 
 	// Get iptable rules and write to file
 	firewallScan(reportPath, "ipv4")
+	// Get suid files and write to file
+	suidScan(reportPath)
+	// Get sgid files and write to file
+	sgidScan(reportPath)
 }
 
 func firewallScan(filePath, ipVersion string) {
@@ -33,5 +37,29 @@ func firewallScan(filePath, ipVersion string) {
 		runCommand("touch " + reportPath + "IPv6IptablesRules.txt")
 		runCommand("ip6tables -S > " + reportPath + "IPv6IptablesRules.txt")
 	}
+}
+
+func suidScan(filePath string) {
+	reportPath := filePath
+
+	fmt.Println("Starting SUID scan now!")
+	runCommand("mkdir " + reportPath)
+	runCommand("chmod 777 " + reportPath)
+	fmt.Println("Saving all files to " + reportPath)
+
+	runCommand("touch " + reportPath + "SUIDfiles.txt")
+	runCommand("sudo find / -perm /4000 2>/dev/null > " + reportPath + "SUIDfiles.txt")
+}
+
+func sgidScan(filePath string) {
+	reportPath := filePath
+
+	fmt.Println("Starting SGID scan now!")
+	runCommand("mkdir " + reportPath)
+	runCommand("chmod 777 " + reportPath)
+	fmt.Println("Saving all files to " + reportPath)
+
+	runCommand("touch " + reportPath + "SGIDfiles.txt")
+	runCommand("sudo find / -perm /2000 2>/dev/null > " + reportPath + "SGIDfiles.txt")
 }
 
