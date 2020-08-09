@@ -4,6 +4,8 @@ import (
 	// "flag"
 	"fmt"
 	"os"
+
+	"github.com/fatih/color"
 	// "os/exec"
 	// "strings"
 	// "runtime"
@@ -21,7 +23,7 @@ func main() {
 		hostname = "linux"
 	}
 
-	fmt.Println(`
+	color.Red(`
   ██████  ██░ ██ ▓█████  ██▀███   ██▓     ▒█████   ▄████▄   ██ ▄█▀
 ▒██    ▒ ▓██░ ██▒▓█   ▀ ▓██ ▒ ██▒▓██▒    ▒██▒  ██▒▒██▀ ▀█   ██▄█▒ 
 ░ ▓██▄   ▒██▀▀██░▒███   ▓██ ░▄█ ▒▒██░    ▒██░  ██▒▒▓█    ▄ ▓███▄░ 
@@ -31,15 +33,17 @@ func main() {
 ░ ░▒  ░ ░ ▒ ░▒░ ░ ░ ░  ░  ░▒ ░ ▒░░ ░ ▒  ░  ░ ▒ ▒░   ░  ▒   ░ ░▒ ▒░
 ░  ░  ░   ░  ░░ ░   ░     ░░   ░   ░ ░   ░ ░ ░ ▒  ░        ░ ░░ ░ 
       ░   ░  ░  ░   ░  ░   ░         ░  ░    ░ ░  ░ ░      ░  ░   
-                                                  ░               
+												  ░        
+												  `)
+	color.Green(`
 A tool built by Akshay Rohatgi for incident response teams
 sherlock@` + hostname + ` is ready
-Use ./src help for a list of commands				  `)
+Use ./sherlock help for a list of commands`)
 
 	switch arg := nicerArgs[0]; arg {
-	
+
 	case "help":
-	
+
 		argText := `
 
 Argument list:
@@ -72,16 +76,16 @@ Argument list:
 
 `
 		fmt.Println(argText)
-	
+
 	case "systemScan":
-	
+
 		systemScan(nicerArgs[1])
-	
+
 	case "localUsers":
 
 		getLocalUsers()
 
-	case "getMD5": 
+	case "getMD5":
 
 		getMD5(nicerArgs[1])
 
@@ -90,33 +94,35 @@ Argument list:
 		md5Baselines()
 
 	case "firewallScan":
-	
+
 		firewallScanStandalone(nicerArgs[1], nicerArgs[2])
-	
+
 	case "suidScan":
-	
+
 		suidScanStandalone(nicerArgs[1])
-	
+
 	case "sgidScan":
-	
+
 		sgidScanStandalone(nicerArgs[1])
-	
+
 	case "servicesSupported":
 
 		supported := `
+Services Supported:
+==================
 Apache2
 Nginx
 		`
 		fmt.Println(supported)
 
-	case "fetchApache2Logs": 
+	case "fetchApache2Logs":
 
 		getApache2LogsStandalone(nicerArgs[1])
-	
-	case "fetchNginxLogs": 
+
+	case "fetchNginxLogs":
 
 		getNginxLogsStandalone(nicerArgs[1])
-	
+
 	case "fetchAuthLogs":
 
 		getAuthLogsStandalone(nicerArgs[1])

@@ -20,3 +20,5 @@ echo "export PATH=$PATH:/usr/local/go/bin" >>/etc/profile
 source /etc/profile
 
 go get "os/exec"
+go get "github.com/fatih/color"
+go get "crypto/md5"
