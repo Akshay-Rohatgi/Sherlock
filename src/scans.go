@@ -25,6 +25,10 @@ func systemScan(filePath string) {
 	getApache2Logs(reportPath)
 	// Attempt to find nginx log files
 	getNginxLogs(reportPath)
+	// Attempt to get apache2 config
+	apache2ConfigSave(reportPath)
+	// Attempt to get nginx config
+	nginxConfigSave(reportPath)
 }
 
 func firewallScan(filePath, ipVersion string) {
@@ -109,6 +113,46 @@ func getNginxLogs(filePath string) {
 		runCommand("cp /var/log/nginx/error.log " + reportPath)
 	} else {
 		fmt.Println("Could not find nginx error logs!")
+	}
+
+}
+
+func nginxConfigSave(filePath string) {
+	reportPath := filePath
+
+	if _, err := os.Stat("/etc/nginx/nginx.conf"); err == nil {
+		fmt.Println("The nginx main configuration file exists at /etc/nginx/nginx.conf!")
+		runCommand("chmod 777 " + reportPath)
+		runCommand("cp /etc/nginx/nginx.conf " + reportPath)
+	} else {
+		fmt.Println("Error")
+	}
+
+	if _, err := os.Stat("/etc/nginx/sites-available"); err == nil {
+		fmt.Println("Saving all available nginx sites")
+		runCommand("cp /etc/nginx/sites-available " + reportPath)
+	} else {
+		fmt.Println("Error")
+	}
+
+}
+
+func apache2ConfigSave(filePath string) {
+	reportPath := filePath
+
+	if _, err := os.Stat("/etc/apache2/apache2.conf"); err == nil {
+		fmt.Println("The apache main configuration file exists at /etc/apache2/apache2.conf!")
+		runCommand("chmod 777 " + reportPath)
+		runCommand("cp /etc/apache2/apache2.conf " + reportPath)
+	} else {
+		fmt.Println("Error")
+	}
+
+	if _, err := os.Stat("/etc/apache2/sites-available"); err == nil {
+		fmt.Println("Saving all available apache2 sites")
+		runCommand("cp /etc/apache2/sites-available " + reportPath)
+	} else {
+		fmt.Println("Error")
 	}
 
 }
