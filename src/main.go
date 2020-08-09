@@ -32,7 +32,7 @@ func main() {
 ░  ░  ░   ░  ░░ ░   ░     ░░   ░   ░ ░   ░ ░ ░ ▒  ░        ░ ░░ ░ 
       ░   ░  ░  ░   ░  ░   ░         ░  ░    ░ ░  ░ ░      ░  ░   
                                                   ░               
-A tool built for blue teams and incident response teams
+A tool built by Akshay Rohatgi for incident response teams
 sherlock@` + hostname + ` is ready
 Use ./src help for a list of commands				  `)
 
@@ -45,6 +45,8 @@ help - display possible arguments (what you see right now)
 systemScan /path/to/dir - Will save all system log files, iptable rules, and suspicious files to the specified directory
 ========================================================================================================================`
 		fmt.Println(argText)
+	case "systemScan":
+		systemScan(nicerArgs[1])
 	default:
 		fmt.Println("No arguments specified, exiting with a status code of 0")
 		os.Exit(0)
