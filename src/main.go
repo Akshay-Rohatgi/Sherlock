@@ -34,11 +34,15 @@ func main() {
 ░  ░  ░   ░  ░░ ░   ░     ░░   ░   ░ ░   ░ ░ ░ ▒  ░        ░ ░░ ░ 
       ░   ░  ░  ░   ░  ░   ░         ░  ░    ░ ░  ░ ░      ░  ░   
 												  ░        
-												  `)
-	color.Green(`
+												  					`)
+	color.Blue(`
 A tool built by Akshay Rohatgi for incident response teams
-sherlock@` + hostname + ` is ready
 Use ./sherlock help for a list of commands`)
+
+	green := color.New(color.FgGreen).SprintFunc()
+	blue := color.New(color.FgBlue).SprintFunc()
+	red := color.New(color.FgRed).SprintFunc()
+	fmt.Printf("%s%s%s is ready", red("sherlock"), green("@"), blue(hostname))
 
 	switch arg := nicerArgs[0]; arg {
 
