@@ -1,12 +1,13 @@
 package main
 
 import (
+	"io"
 	"os"
-	"log"
 	"fmt"
 	"bufio"
 	"os/exec"
 	"strings"
+	"crypto/md5"
 	// "strings"
 )
 
@@ -27,13 +28,32 @@ func runCommand(command string) {
 func getLocalUsers() {
 	fle, err := os.Open("/etc/passwd")
 	if err != nil {
-		log.Fatal(err.Error())
+		fmt.Println(err.Error())
 	}
+	defer fle.Close()
+
 	scanner := bufio.NewScanner(fle)
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		user := strings.Split(scanner.Text(), ":")
 		fmt.Println(user[0])
 	}
-	fle.Close()
+
+}
+
+func getMD5(filePath string) {
+	fle, err := os.Open(filePath)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	defer fle.Close()
+
+	hash := md5.New()
+	_, err = io.Copy(hash, fle)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	fmt.Printf("MD5 Hash for %s is %x\n", filePath, hash.Sum(nil))
+
 }

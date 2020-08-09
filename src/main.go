@@ -44,7 +44,6 @@ Use ./src help for a list of commands				  `)
 
 Argument list:
 
-
 	Neutral args
 
 		help - display possible arguments (what you see right now)
@@ -52,6 +51,7 @@ Argument list:
 	Utility Arguments
 		
 		localUsers - display all users on the system (including system users)
+		getMD5 /path/to/dir - get md5 checksum of a file (this arg is a WASTE of time, why would you write a go function for something you can do with one linux command smh UNLESS you dont have md5sum installed. Then yea, use go.)
 
 	System Arguments
 
@@ -79,6 +79,10 @@ Argument list:
 	case "localUsers":
 
 		getLocalUsers()
+
+	case "getMD5": 
+
+		getMD5(nicerArgs[1])
 
 	case "firewallScan":
 	
