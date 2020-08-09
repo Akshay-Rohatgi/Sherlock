@@ -4,7 +4,7 @@ import (
 	// "flag"
 	"fmt"
 	"os"
-	"os/exec"
+	// "os/exec"
 	// "strings"
 	// "runtime"
 )
@@ -14,7 +14,6 @@ func main() {
 	// get args
 	args := os.Args
 	nicerArgs := args[1:]
-	fmt.Println(nicerArgs)
 
 	// grab hostname lol
 	hostname, err := os.Hostname()
@@ -35,14 +34,20 @@ func main() {
                                                   ░               
 A tool built for blue teams and incident response teams
 sherlock@` + hostname + ` is ready
-													  `)
-	fmt.Println(commandOutput("ls"))
-}
+Use ./src help for a list of commands				  `)
 
-func commandOutput(command string) string {
-	out, err := exec.Command(command).Output()
-	if err != nil {
-		fmt.Println(`[ERROR] Error running ` + command)
+	switch arg := nicerArgs[0]; arg {
+	case "help":
+		argText := `
+========================================================================================================================
+Argument list:
+help - display possible arguments (what you see right now)
+systemScan /path/to/dir - Will save all system log files, iptable rules, and suspicious files to the specified directory
+========================================================================================================================`
+		fmt.Println(argText)
+	default:
+		fmt.Println("No arguments specified, exiting with a status code of 0")
+		os.Exit(0)
 	}
-	return string(out[:])
+
 }
