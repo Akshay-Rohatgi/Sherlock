@@ -55,5 +55,4 @@ func getMD5(filePath string) {
 	}
 
 	fmt.Printf("MD5 Hash for %s is %x\n", filePath, hash.Sum(nil))
-
 }

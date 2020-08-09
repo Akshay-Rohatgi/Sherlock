@@ -100,12 +100,18 @@ Argument list:
 
 		supported := `
 Apache2
+Nginx
 		`
 		fmt.Println(supported)
 
 	case "fetchApache2Logs": 
 
 		getApache2LogsStandalone(nicerArgs[1])
+	
+	case "fetchNginxLogs": 
+
+		getNginxLogsStandalone(nicerArgs[1])
+	
 	case "fetchAuthLogs":
 
 		getAuthLogsStandalone(nicerArgs[1])

@@ -29,6 +29,30 @@ func getApache2LogsStandalone(filePath string) {
 	}
 }
 
+func getNginxLogsStandalone(filePath string) {
+	time := time.Now()
+	reportPath := filePath + "sherlock-nginx-log-scan-report-" + time.Format("01-02-2006") + "/"
+	runCommand("mkdir " + reportPath)
+
+	if _, err := os.Stat("/var/log/nginx/access.log"); err == nil {
+		fmt.Println("The nginx access log exists at /var/log/nginx/access.log!")
+		runCommand("chmod 777 " + reportPath)
+		runCommand("cp /var/log/nginx/access.log " + reportPath)
+	} else {
+		fmt.Println("Could not find nginx access logs!")
+	}
+
+
+	if _, err := os.Stat("/var/log/nginx/error.log"); err == nil {
+		fmt.Println("The nginx access log exists at /var/log/nginx/error.log!")
+		runCommand("chmod 777 " + reportPath)
+		runCommand("cp /var/log/nginx/error.log " + reportPath)
+	} else {
+		fmt.Println("Could not find nginx error logs!")
+	}
+
+}
+
 func getAuthLogsStandalone(filePath string) {
 	time := time.Now()
 	reportPath := filePath + "sherlock-auth-log-scan-report-" + time.Format("01-02-2006") + "/"

@@ -23,6 +23,8 @@ func systemScan(filePath string) {
 	sgidScan(reportPath)
 	// Attempt to find apache log files
 	getApache2Logs(reportPath)
+	// Attempt to find nginx log files
+	getNginxLogs(reportPath)
 }
 
 func firewallScan(filePath, ipVersion string) {
@@ -85,4 +87,28 @@ func getApache2Logs(filePath string) {
 	} else {
 		fmt.Println("Could not find apache logs!")
 	}
+}
+
+func getNginxLogs(filePath string) {
+	reportPath := filePath
+
+	// checks for nginx access and error logs
+
+	if _, err := os.Stat("/var/log/nginx/access.log"); err == nil {
+		fmt.Println("The nginx access log exists at /var/log/nginx/access.log!")
+		runCommand("chmod 777 " + reportPath)
+		runCommand("cp /var/log/nginx/access.log " + reportPath)
+	} else {
+		fmt.Println("Could not find nginx access logs!")
+	}
+
+
+	if _, err := os.Stat("/var/log/nginx/error.log"); err == nil {
+		fmt.Println("The nginx access log exists at /var/log/nginx/error.log!")
+		runCommand("chmod 777 " + reportPath)
+		runCommand("cp /var/log/nginx/error.log " + reportPath)
+	} else {
+		fmt.Println("Could not find nginx error logs!")
+	}
+
 }
