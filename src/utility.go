@@ -57,3 +57,11 @@ func getMD5(filePath string) []byte {
 	fmt.Printf("MD5 Hash for %s is %x\n", filePath, hash.Sum(nil))
 	return hash.Sum(nil)
 }
+
+func md5Baselines() {
+	paths := []string{"/etc/passwd", "/etc/shadow", "/etc/group", "/etc/login.defs", "/etc/shells", "/bin/su"}
+
+	for _, file := range paths {
+		getMD5(file)
+	}
+}

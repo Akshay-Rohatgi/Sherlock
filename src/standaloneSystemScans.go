@@ -49,11 +49,3 @@ func sgidScanStandalone(filePath string) {
 	runCommand("touch " + reportPath + "SGIDfiles.txt")
 	runCommand("sudo find / -perm /2000 2>/dev/null > " + reportPath + "SGIDfiles.txt")
 }
-
-func md5Baselines() {
-	paths := []string{"/etc/passwd", "/etc/shadow", "/etc/group", "/etc/login.defs", "/etc/shells", "/bin/su"}
-
-	for _, file := range paths {
-		getMD5(file)
-	}
-}
