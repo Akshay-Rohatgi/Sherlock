@@ -138,6 +138,10 @@ OpenSSH-Server
 	case "sshConfigSave":
 
 		sshConfigSaveStandalone(nicerArgs[1])
+	
+	case "mysqlConfigSave": 
+
+		mysqlConfigSaveStandalone(nicerArgs[1])
 
 	case "fetchApache2Logs":
 

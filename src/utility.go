@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"strings"
 	"crypto/md5"
+	"github.com/fatih/color"
 	// "strings"
 )
 
@@ -71,4 +72,9 @@ func checkFileExist(filePath string) (bool) {
 		return true
 	} 
 	return false
+}
+
+func errorPrint(message string) {
+	red := color.New(color.FgRed, color.Bold).SprintFunc()
+	fmt.Printf("[%s]%s\n", red("ERROR"), message)
 }

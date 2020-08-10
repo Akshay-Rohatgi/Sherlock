@@ -11,21 +11,17 @@ func getApache2LogsStandalone(filePath string) {
 	reportPath := filePath + "sherlock-apache2-log-scan-report-" + time.Format("01-02-2006") + "/"
 	runCommand("mkdir " + reportPath)
 
+	possibleLogFileLocations := []string{"/var/log/apache/access.log", "/var/log/apache2/access.log", "/etc/httpd/logs/access_log"}
+
 	// check to see where the access logs are and if found then copy them to desired file path
-	if _, err := os.Stat("/var/log/apache/access.log"); err == nil {
-		fmt.Println("The apache access log exists at /var/log/apache/access.log!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /var/log/apache/access.log " + reportPath)
-	} else if _, err := os.Stat("/var/log/apache2/access.log"); err == nil {
-		fmt.Println("The apache access log exists at /var/log/apache2/access.log!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /var/log/apache2/access.log " + reportPath)
-	} else if _, err := os.Stat("/etc/httpd/logs/access_log"); err == nil {
-		fmt.Println("The apache access log exists at /etc/httpd/logs/access_log!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /etc/httpd/logs/access_log " + reportPath)
-	} else {
-		fmt.Println("Could not find apache logs!")
+	for _, file := range possibleLogFileLocations {
+		if _, err := os.Stat(file); err == nil {
+			fmt.Println("The Apache access log exists at " + file)
+			runCommand("chmod 777 " + reportPath)
+			runCommand("cp -r " + file + " " + reportPath)
+		} else {
+			errorPrint("The Apache access log does not exist at " + file)
+		}
 	}
 }
 
@@ -34,21 +30,16 @@ func getNginxLogsStandalone(filePath string) {
 	reportPath := filePath + "sherlock-nginx-log-scan-report-" + time.Format("01-02-2006") + "/"
 	runCommand("mkdir " + reportPath)
 
-	if _, err := os.Stat("/var/log/nginx/access.log"); err == nil {
-		fmt.Println("The nginx access log exists at /var/log/nginx/access.log!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /var/log/nginx/access.log " + reportPath)
-	} else {
-		fmt.Println("Could not find nginx access logs!")
-	}
+	possibleLogFileLocations := []string{"/var/log/nginx/access.log", "/var/log/nginx/error.log"}
 
-
-	if _, err := os.Stat("/var/log/nginx/error.log"); err == nil {
-		fmt.Println("The nginx access log exists at /var/log/nginx/error.log!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /var/log/nginx/error.log " + reportPath)
-	} else {
-		fmt.Println("Could not find nginx error logs!")
+	for _, file := range possibleLogFileLocations {
+		if _, err := os.Stat(file); err == nil {
+			fmt.Println("The Nginx log exists at " + file)
+			runCommand("chmod 777 " + reportPath)
+			runCommand("cp -r " + file + " " + reportPath)
+		} else {
+			errorPrint("The Nginx log does not exist at " + file)
+		}
 	}
 
 }
