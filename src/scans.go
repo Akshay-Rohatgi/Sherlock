@@ -32,6 +32,8 @@ func systemScan(filePath string) {
 	nginxConfigSave(reportPath)
 	// Attempt to get ssh config
 	sshConfigSave(reportPath)
+	// Attempt to get mysql config
+	mysqlConfigSave(reportPath)
 	// critical files backup
 	criticalSystemFileBackup(reportPath)
 }
@@ -81,20 +83,17 @@ func getApache2Logs(filePath string) {
 	reportPath := filePath
 
 	// check to see where the access logs are and if found then copy them to desired file path
-	if _, err := os.Stat("/var/log/apache/access.log"); err == nil {
-		fmt.Println("The apache access log exists at /var/log/apache/access.log!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /var/log/apache/access.log " + reportPath)
-	} else if _, err := os.Stat("/var/log/apache2/access.log"); err == nil {
-		fmt.Println("The apache access log exists at /var/log/apache2/access.log!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /var/log/apache2/access.log " + reportPath)
-	} else if _, err := os.Stat("/etc/httpd/logs/access_log"); err == nil {
-		fmt.Println("The apache access log exists at /etc/httpd/logs/access_log!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /etc/httpd/logs/access_log " + reportPath)
-	} else {
-		fmt.Println("Could not find apache logs!")
+	possibleLogFileLocations := []string{"/var/log/apache/access.log", "/var/log/apache2/access.log", "/etc/httpd/logs/access_log"}
+
+	// check to see where the access logs are and if found then copy them to desired file path
+	for _, file := range possibleLogFileLocations {
+		if _, err := os.Stat(file); err == nil {
+			fmt.Println("The Apache access log exists at " + file)
+			runCommand("chmod 777 " + reportPath)
+			runCommand("cp -r " + file + " " + reportPath)
+		} else {
+			errorPrint("The Apache access log does not exist at " + file)
+		}
 	}
 }
 
@@ -102,62 +101,49 @@ func getNginxLogs(filePath string) {
 	reportPath := filePath
 
 	// checks for nginx access and error logs
+	possibleLogFileLocations := []string{"/var/log/nginx/access.log", "/var/log/nginx/error.log"}
 
-	if _, err := os.Stat("/var/log/nginx/access.log"); err == nil {
-		fmt.Println("The nginx access log exists at /var/log/nginx/access.log!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /var/log/nginx/access.log " + reportPath)
-	} else {
-		fmt.Println("Could not find nginx access logs!")
-	}
-
-
-	if _, err := os.Stat("/var/log/nginx/error.log"); err == nil {
-		fmt.Println("The nginx access log exists at /var/log/nginx/error.log!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /var/log/nginx/error.log " + reportPath)
-	} else {
-		fmt.Println("Could not find nginx error logs!")
+	for _, file := range possibleLogFileLocations {
+		if _, err := os.Stat(file); err == nil {
+			fmt.Println("The Nginx log exists at " + file)
+			runCommand("chmod 777 " + reportPath)
+			runCommand("cp -r " + file + " " + reportPath)
+		} else {
+			errorPrint("The Nginx log does not exist at " + file)
+		}
 	}
 
 }
 
 func nginxConfigSave(filePath string) {
 	reportPath := filePath
+	possibleFileLocations := []string{"/etc/nginx/nginx.conf", "/etc/nginx/sites-available"}
 
-	if _, err := os.Stat("/etc/nginx/nginx.conf"); err == nil {
-		fmt.Println("The nginx main configuration file exists at /etc/nginx/nginx.conf!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /etc/nginx/nginx.conf " + reportPath)
-	} else {
-		fmt.Println("Error")
-	}
-
-	if _, err := os.Stat("/etc/nginx/sites-available"); err == nil {
-		fmt.Println("Saving all available nginx sites")
-		runCommand("cp /etc/nginx/sites-available " + reportPath)
-	} else {
-		fmt.Println("Error")
+	for _, file := range possibleFileLocations {
+		fmt.Println(file)
+		if _, err := os.Stat(file); err == nil {
+			fmt.Println("The Nginx configuration file exists at " + file)
+			runCommand("chmod 777 " + reportPath)
+			runCommand("cp -r " + file + " " + reportPath)
+		} else {
+			errorPrint("The Nginx configuration file does not exist at " + file)
+		}
 	}
 
 }
 
 func apache2ConfigSave(filePath string) {
 	reportPath := filePath
+	possibleFileLocations := []string{"/etc/apache2/apache2.conf", "/etc/apache2/sites-available"}
 
-	if _, err := os.Stat("/etc/apache2/apache2.conf"); err == nil {
-		fmt.Println("The apache main configuration file exists at /etc/apache2/apache2.conf!")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /etc/apache2/apache2.conf " + reportPath)
-	} else {
-		fmt.Println("Error")
-	}
-
-	if _, err := os.Stat("/etc/apache2/sites-available"); err == nil {
-		fmt.Println("Saving all available apache2 sites")
-		runCommand("cp /etc/apache2/sites-available " + reportPath)
-	} else {
-		fmt.Println("Error")
+	for _, file := range possibleFileLocations {
+		if _, err := os.Stat(file); err == nil {
+			fmt.Println("The Apache2 configuration file exists at " + file)
+			runCommand("chmod 777 " + reportPath)
+			runCommand("cp -r " + file + " " + reportPath)
+		} else {
+			errorPrint("The Apache2 configuration file does not exist at " + file)
+		}
 	}
 
 }
@@ -182,12 +168,37 @@ func criticalSystemFileBackup(filePath string) {
 	fmt.Printf("[%s] Cannot save the file to specified path\n", blue("COMPLETE"))
 }
 
+
 func sshConfigSave(filePath string) {
 	reportPath := filePath
 
-	if _, err := os.Stat("/etc/ssh/sshd_config"); err == nil {
-		fmt.Println("The SSH configuration file exists at /etc/ssh/sshd_config")
-		runCommand("chmod 777 " + reportPath)
-		runCommand("cp /etc/ssh/sshd_config " + reportPath)
+	possibleFileLocations := []string{"/etc/ssh/sshd_config"}
+
+	for _, file := range possibleFileLocations {
+		if _, err := os.Stat(file); err == nil {
+			fmt.Println("The SSH configuration file exists at " + file)
+			runCommand("chmod 777 " + reportPath)
+			runCommand("cp -r " + file + " " + reportPath)
+		} else {
+			errorPrint("The SSH configuration file does not exist at " + file)
+		}
 	}
+}
+
+
+func mysqlConfigSave(filePath string) {
+	reportPath := filePath
+
+	possibleFileLocations := []string{"/etc/mysql/my.cnf", "/etc/mysql/mysql.conf.d/mysqld.cnf"}
+
+	for _, file := range possibleFileLocations {
+		if _, err := os.Stat(file); err == nil {
+			fmt.Println("The MySQL configuration file exists at " + file)
+			runCommand("chmod 777 " + reportPath)
+			runCommand("cp -r " + file + " " + reportPath)
+		} else {
+			errorPrint("The MySQL configuration file does not exist at " + file)
+		}
+	}
+
 }
