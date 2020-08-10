@@ -73,6 +73,7 @@ Argument list:
 	Critical Service Arguments:
 
 		servicesSupported - Returns the list of services supported
+		<SERVICE NAME>ConfigSave /path/to/dir - Creates backup of the specified critical service configuration files to specified dir
 
 	Log file Arguments:
 
@@ -124,6 +125,14 @@ Apache2
 Nginx
 		`
 		fmt.Println(supported)
+
+	case "apache2ConfigSave":
+
+		apache2ConfigSaveStandalone(nicerArgs[1])
+
+	case "nginxConfigSave":
+
+		nginxConfigSaveStandalone(nicerArgs[1])
 
 	case "fetchApache2Logs":
 
