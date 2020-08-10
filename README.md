@@ -19,6 +19,17 @@ OpenSSH-Server
 MySQL Server
 ```
 
+## Example
+```bash
+sudo ./sherlock help
+```
+![help_page](misc/help.png)
+
+```bash
+sudo ./sherlock nginxConfigSave
+```
+![nginx_config_save](misc/nginx.png)
+
 ## Dev environment 
 ```bash
 git clone https://github.com/Akshay-Rohatgi/Sherlock
