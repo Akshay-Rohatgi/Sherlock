@@ -81,3 +81,22 @@ func mysqlConfigSaveStandalone(filePath string) {
 	}
 
 }
+
+func rawMysqlDbSaveStandalone(filePath string) {
+	time := time.Now()
+	reportPath := filePath + "sherlock-raw-mysql-scan-report-" + time.Format("01-02-2006") + "/"
+	runCommand("mkdir " + reportPath)
+
+	possibleDbLocations := []string{"/var/lib/mysql",}
+
+	// check to see where the access logs are and if found then copy them to desired file path
+	for _, file := range possibleDbLocations {
+		if _, err := os.Stat(file); err == nil {
+			fmt.Println("The MySQL raw DB exists at " + file)
+			runCommand("chmod 777 " + reportPath)
+			runCommand("cp -r " + file + " " + reportPath)
+		} else {
+			errorPrint("The MySQL raw DB does not exist at " + file)
+		}
+	}
+}

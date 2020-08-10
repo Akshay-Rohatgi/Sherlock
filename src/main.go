@@ -73,7 +73,8 @@ Argument list:
 	Critical Service Arguments:
 
 		servicesSupported - Returns the list of services supported
-		<SERVICE NAME>ConfigSave /path/to/dir - Creates backup of the specified critical service configuration files to specified dir
+		<SERVICE NAME>ConfigSave /path/to/dir - Creates backup of the specified critical service configuration files to specified directory
+		mysqlRawDbSave /path/to/dir - Creates a backup of the raw mysql database on the system to the specified directory
 
 	Log file Arguments:
 
@@ -121,9 +122,10 @@ Argument list:
 		supported := `
 Services Supported:
 ==================
-Apache2
-Nginx
-OpenSSH-Server
+Apache2 (apache2)
+Nginx (nginx)
+OpenSSH-Server (ssh)
+MySQL Server (mysql)
 		`
 		fmt.Println(supported)
 
@@ -142,6 +144,10 @@ OpenSSH-Server
 	case "mysqlConfigSave": 
 
 		mysqlConfigSaveStandalone(nicerArgs[1])
+
+	case "mysqlRawDbSave":
+
+		rawMysqlDbSaveStandalone(nicerArgs[1])
 
 	case "fetchApache2Logs":
 
