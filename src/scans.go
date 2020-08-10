@@ -4,6 +4,7 @@ import (
 	"os"
 	"fmt"
 	"time"
+	"github.com/fatih/color"
 )
 
 func systemScan(filePath string) {
@@ -155,4 +156,27 @@ func apache2ConfigSave(filePath string) {
 		fmt.Println("Error")
 	}
 
+}
+
+func criticalSystemFileBackup(filePath string) {
+	time := time.Now()
+	reportPath := filePath + "sherlock-critical-files-backup" + time.Format("01-02-2006") + "/"
+	paths := []string{"/etc/passwd", "/etc/shadow", "/etc/group", "/etc/login.defs", "/etc/shells", "/bin/su", "/etc/hosts.allow", "/etc/hosts.deny", "/etc/hosts", "/etc/fstab"}
+	
+	blue := color.New(color.FgBlue).SprintFunc()
+	green := color.New(color.FgGreen).SprintFunc()
+	red := color.New(color.FgRed).SprintFunc()
+
+	runCommand("mkdir " + reportPath)
+
+	for _, file := range paths {
+
+		if checkFileExist(file) == true {
+			fmt.Printf("[%s] Saving file to specified path\n", green("FOUND"))
+			runCommand("cp " + file + " " + reportPath)
+		} else {
+			fmt.Printf("[%s] Cannot save the file to specified path", red("NOT FOUND"))
+		}
+	}
+	fmt.Printf("[%s] Cannot save the file to specified path\n", blue("COMPLETE"))
 }

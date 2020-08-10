@@ -60,9 +60,22 @@ func getAuthLogsStandalone(filePath string) {
 
 	if _, err := os.Stat("/var/log/auth.log"); err == nil {
 		fmt.Println("The system authentication log exists!")
-		runCommand("cp /var/auth.log " + reportPath)
+		runCommand("cp /var/log/auth.log " + reportPath)
 	} else {
 		fmt.Println("The system authentication log does NOT exist!")
 		fmt.Println("sus :thinking:")
+	}
+}
+
+func getDpkgLogsStandalone(filePath string) {
+	time := time.Now()
+	reportPath := filePath + "sherlock-dpkg-log-scan-report-" + time.Format("01-02-2006") + "/"
+	runCommand("mkdir " + reportPath)
+
+	if _, err := os.Stat("/var/log/dpkg.log"); err == nil {
+		fmt.Println("The dpkg log exists!")
+		runCommand("cp /var/log/dpkg.log " + reportPath)
+	} else {
+		fmt.Println("The dpkg log does NOT exist!")
 	}
 }

@@ -58,10 +58,18 @@ func getMD5(filePath string) []byte {
 	return hash.Sum(nil)
 }
 
-func md5Baselines() {
-	paths := []string{"/etc/passwd", "/etc/shadow", "/etc/group", "/etc/login.defs", "/etc/shells", "/bin/su"}
 
+func md5Baselines() {
+	paths := []string{"/etc/passwd", "/etc/shadow", "/etc/group", "/etc/login.defs", "/etc/shells", "/bin/su", "/etc/hosts.allow", "/etc/hosts.deny", "/etc/hosts", "/etc/fstab"}
 	for _, file := range paths {
 		getMD5(file)
+	}
+}
+
+func checkFileExist(filePath string) (bool) {
+	if _, err := os.Stat(filePath); err == nil {
+		return true
+	} else {
+		return false
 	}
 }

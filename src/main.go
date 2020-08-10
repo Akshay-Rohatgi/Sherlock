@@ -42,7 +42,7 @@ Use ./sherlock help for a list of commands`)
 	green := color.New(color.FgGreen).SprintFunc()
 	blue := color.New(color.FgBlue).SprintFunc()
 	red := color.New(color.FgRed).SprintFunc()
-	fmt.Printf("%s%s%s is ready", red("sherlock"), green("@"), blue(hostname))
+	fmt.Printf("%s%s%s is ready\n\n", red("sherlock"), green("@"), blue(hostname))
 
 	switch arg := nicerArgs[0]; arg {
 
@@ -60,7 +60,8 @@ Argument list:
 		
 		localUsers - display all users on the system (including system users)
 		getMD5 /path/to/dir - get md5 checksum of a file (this arg is a WASTE of time, why would you write a go function for something you can do with one linux command smh UNLESS you dont have md5sum installed. Then yea, use go.)
-		md5Baselines - get md5 checksums of some important files
+		md5Baselines - output md5 checksums of some important files
+		criticalFileBackups /path/to/dir - backs up critical linux files to a specified directory
 
 	System Arguments
 
@@ -76,7 +77,8 @@ Argument list:
 	Log file Arguments:
 
 		fetch<CRITICAL SERVICE/PROGRAM>Logs /path/to/dir - Fetches log files for that critical service, EX: fetchApache2Logs /home/reports
-		fetchAuthLogs
+		fetchAuthLogs /path/to/dir - Fetches auth log files
+		fetchDpkgLogs /path/to/dir - Fetches dpkg log files 
 
 `
 		fmt.Println(argText)
@@ -96,6 +98,10 @@ Argument list:
 	case "md5Baselines":
 
 		md5Baselines()
+
+	case "criticalFileBackups":
+
+		criticalSystemFileBackupStandalone(nicerArgs[1])
 
 	case "firewallScan":
 
