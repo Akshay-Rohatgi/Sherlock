@@ -49,3 +49,15 @@ func apache2ConfigSaveStandalone(filePath string) {
 	}
 
 }
+
+func sshConfigSaveStandalone(filePath string) {
+	time := time.Now()
+	reportPath := filePath + "sherlock-ssh-config-scan-report-" + time.Format("01-02-2006") + "/"
+	runCommand("mkdir " + reportPath)
+
+	if _, err := os.Stat("/etc/ssh/sshd_config"); err == nil {
+		fmt.Println("The SSH configuration file exists at /etc/ssh/sshd_config")
+		runCommand("chmod 777 " + reportPath)
+		runCommand("cp /etc/ssh/sshd_config " + reportPath)
+	}
+}

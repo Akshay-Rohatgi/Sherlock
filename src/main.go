@@ -123,6 +123,7 @@ Services Supported:
 ==================
 Apache2
 Nginx
+OpenSSH-Server
 		`
 		fmt.Println(supported)
 
@@ -133,6 +134,10 @@ Nginx
 	case "nginxConfigSave":
 
 		nginxConfigSaveStandalone(nicerArgs[1])
+
+	case "sshConfigSave":
+
+		sshConfigSaveStandalone(nicerArgs[1])
 
 	case "fetchApache2Logs":
 

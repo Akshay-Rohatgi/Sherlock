@@ -30,6 +30,8 @@ func systemScan(filePath string) {
 	apache2ConfigSave(reportPath)
 	// Attempt to get nginx config
 	nginxConfigSave(reportPath)
+	// Attempt to get ssh config
+	sshConfigSave(reportPath)
 	// critical files backup
 	criticalSystemFileBackup(reportPath)
 }
@@ -178,4 +180,14 @@ func criticalSystemFileBackup(filePath string) {
 		}
 	}
 	fmt.Printf("[%s] Cannot save the file to specified path\n", blue("COMPLETE"))
+}
+
+func sshConfigSave(filePath string) {
+	reportPath := filePath
+
+	if _, err := os.Stat("/etc/ssh/sshd_config"); err == nil {
+		fmt.Println("The SSH configuration file exists at /etc/ssh/sshd_config")
+		runCommand("chmod 777 " + reportPath)
+		runCommand("cp /etc/ssh/sshd_config " + reportPath)
+	}
 }
