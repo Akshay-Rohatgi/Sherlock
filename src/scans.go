@@ -30,6 +30,8 @@ func systemScan(filePath string) {
 	apache2ConfigSave(reportPath)
 	// Attempt to get nginx config
 	nginxConfigSave(reportPath)
+	// critical files backup
+	criticalSystemFileBackup(reportPath)
 }
 
 func firewallScan(filePath, ipVersion string) {
@@ -159,15 +161,12 @@ func apache2ConfigSave(filePath string) {
 }
 
 func criticalSystemFileBackup(filePath string) {
-	time := time.Now()
-	reportPath := filePath + "sherlock-critical-files-backup" + time.Format("01-02-2006") + "/"
+	reportPath := filePath
 	paths := []string{"/etc/passwd", "/etc/shadow", "/etc/group", "/etc/login.defs", "/etc/shells", "/bin/su", "/etc/hosts.allow", "/etc/hosts.deny", "/etc/hosts", "/etc/fstab"}
 	
 	blue := color.New(color.FgBlue).SprintFunc()
 	green := color.New(color.FgGreen).SprintFunc()
 	red := color.New(color.FgRed).SprintFunc()
-
-	runCommand("mkdir " + reportPath)
 
 	for _, file := range paths {
 
