@@ -9,7 +9,6 @@ import (
 	"strings"
 	"crypto/md5"
 	"github.com/fatih/color"
-	// "strings"
 )
 
 func commandOutput(command string) string {
